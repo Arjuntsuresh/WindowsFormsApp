@@ -55,9 +55,19 @@ namespace WindowsFormsApp1
                 }
                 else
                 {
+                    if(textBox1.Text==string.Empty)
+                    {
+                        textBox1.Clear();
+                        MessageBox.Show("Username is required!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                    else if(textBox2.Text == string.Empty)
+                    {
+                        textBox2.Clear();
+                        MessageBox.Show("Password is required!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
                     MessageBox.Show("Invalid login details!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    textBox1.Clear();
-                    textBox2.Clear();
+                   
+                  
                     //to focus the textbox firstname
                     textBox1.Focus();
                 }

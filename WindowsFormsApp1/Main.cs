@@ -3,6 +3,7 @@ using System.Windows.Forms;
 using System.Data.SqlClient;
 using System.Configuration;
 using System.Data;
+using System.Text.RegularExpressions;
 
 namespace WindowsFormsApp1
 {
@@ -46,6 +47,8 @@ namespace WindowsFormsApp1
                 MessageBox.Show("Lastname is required", "Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
+           /* string pattern = @"^[^@\s]+@[^@\s]+\.[^@\s]+$";
+            Regex regex = new Regex(pattern);*/
            else if(txt_email.Text == string.Empty)
             {
                 MessageBox.Show("Email is required", "Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -153,6 +156,16 @@ namespace WindowsFormsApp1
             {
                 MessageBox.Show("Please select a student to delete!", "delete?", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private void label2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btn_Exit_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }
