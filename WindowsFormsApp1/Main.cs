@@ -4,6 +4,7 @@ using System.Data.SqlClient;
 using System.Configuration;
 using System.Data;
 using System.Text.RegularExpressions;
+using System.Security.Cryptography.X509Certificates;
 
 namespace WindowsFormsApp1
 {
@@ -18,7 +19,13 @@ namespace WindowsFormsApp1
 
         private void button1_Click(object sender, EventArgs e)
         {
-            if (isvalid())
+           bool firstName=  IsValidFirstName(txt_Firstname.Text);
+           bool secondName= IsValidSecondName(txt_lastname.Text);
+           bool email= IsValidEmail(txt_email.Text);
+           bool number= IsValidNumber(txt_phone.Text);
+           bool address= IsValidAddress(txt_address.Text);
+
+            if (ValidateAll())
             {
                 SqlCommand command = new SqlCommand("INSERT INTO userdetails (firstname,lastname,email,phone,address) VALUES (@firstname,@lastname,@email,@phone,@address)", connection);
                 command.CommandType = CommandType.Text;
@@ -35,37 +42,113 @@ namespace WindowsFormsApp1
                 Cleartextbox();
             }
         }
-
-        private bool isvalid()
+        public bool IsValidFirstName(string s)
         {
-           if(txt_Firstname.Text== string.Empty)
+            // Check if the first name is empty
+            if (string.IsNullOrWhiteSpace(s))
             {
-                MessageBox.Show("firstname is required", "Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return false;
-            }else if(txt_lastname.Text== string.Empty)
-            {
-                MessageBox.Show("Lastname is required", "Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("First name is required!", "Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
-           /* string pattern = @"^[^@\s]+@[^@\s]+\.[^@\s]+$";
-            Regex regex = new Regex(pattern);*/
-           else if(txt_email.Text == string.Empty)
+
+            // Define the regular expression for first name validation
+            Regex check = new Regex("^[A-Za-z][A-Za-z '-]{0,49}$");
+            bool valid = check.IsMatch(s);
+
+            // Show a message if the first name format is not correct
+            if (!valid)
             {
-                MessageBox.Show("Email is required", "Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("First name format is not correct!", "Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
+            return valid;
+        }
+        public bool IsValidSecondName(string s)
+        {
+            // Check if the first name is empty
+            if (string.IsNullOrWhiteSpace(s))
+            {
+                MessageBox.Show("Last name is required!", "Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
-           else if(txt_phone.Text == string.Empty)
+            Regex check = new Regex("^[A-Za-z][A-Za-z '-]{0,49}$");
+            bool valid = check.IsMatch(s);
+
+            if (!valid)
             {
-                MessageBox.Show("Phone number is required", "Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Second Name format is not correct!");
+            }
+
+            return valid;
+        }
+        public bool IsValidEmail(string s)
+        {
+            // Check if the email is empty
+            if (string.IsNullOrWhiteSpace(s))
+            {
+                MessageBox.Show("Email is required!", "Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
-           else if(txt_address.Text == string.Empty)
+            Regex check = new Regex(@"^[^\s@]+@[^\s@]+\.[^\s@]+$");
+            bool valid = check.IsMatch(s);
+
+            if (!valid)
             {
-                MessageBox.Show("Address is required", "Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Email format is not correct!");
+            }
+
+            return valid;
+        }
+        public bool IsValidNumber(string s)
+        {
+            // Check if the pnone number is empty
+            if (string.IsNullOrWhiteSpace(s))
+            {
+                MessageBox.Show("Phone number is required!", "Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
+            Regex check = new Regex(@"^\+?[1-9]\d{1,14}$");
+            bool valid = check.IsMatch(s);
+
+            if (!valid)
+            {
+                MessageBox.Show("Phone number format is not correct!");
+            }
+
+            return valid;
+        }
+        public bool IsValidAddress(string s)
+        {
+            // Check if the address is empty
+            if (string.IsNullOrWhiteSpace(s))
+            {
+                MessageBox.Show("Address is required!", "Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+            
+        }
+
+        public bool ValidateAll()
+        {
+            if (!IsValidFirstName(txt_Firstname.Text))
+                return false;
+            if (!IsValidSecondName(txt_lastname.Text))
+                return false;
+            if (!IsValidEmail(txt_email.Text))
+                return false;
+            if (!IsValidNumber(txt_phone.Text))
+                return false;
+            if (!IsValidAddress(txt_address.Text))
+                return false;
+
             return true;
         }
+
+
 
         private void label3_Click(object sender, EventArgs e)
         {
